@@ -732,7 +732,8 @@ p {
     border-radius: 22px;
     padding: 2px;                         /* the "border" thickness */
     background: var(--border);            /* default subtle border */
-    transition: var(--transition);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    perspective: 1000px;                  /* Enable 3D perspective parent */
 }
 
 .svc-card:hover {
@@ -753,11 +754,37 @@ p {
     gap: 18px;
     position: relative;
     overflow: hidden;
-    transition: var(--transition);
+    /* Exclude transform transition to prevent conflicts with GSAP */
+    transition: background 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-style: preserve-3d;
 }
 
 .svc-card:hover .svc-card-inner {
     background: var(--bg-card-hover);
+}
+
+/* Ensure all interactive card content floats safely above the cursor spotlight */
+.svc-card-inner > *:not(.card-spotlight):not(.svc-glow-line) {
+    position: relative;
+    z-index: 2;
+}
+
+/* --- Spotlight Glow Effect inside Cards --- */
+.card-spotlight {
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(160px circle at center, rgba(212, 168, 83, 0.12) 0%, rgba(124, 58, 237, 0.08) 50%, transparent 100%);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.5s ease;
+    z-index: 1; /* Sit under text content but above background */
+}
+
+.svc-card:hover .card-spotlight {
+    opacity: 1;
 }
 
 /* Top glow accent line */

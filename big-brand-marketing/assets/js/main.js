@@ -510,7 +510,61 @@ document.addEventListener('DOMContentLoaded', () => {
             );
         });
 
-        // ─── 5q. REFRESH ON LOAD ───
+        // ─── 5q. SERVICE CARDS 3D TILT & CURSOR SPOTLIGHT ───
+        const svcCards = document.querySelectorAll('.svc-card');
+        svcCards.forEach(card => {
+            const inner = card.querySelector('.svc-card-inner');
+            if (!inner) return;
+
+            // Dynamically inject the card spotlight container as the first child
+            const spotlight = document.createElement('div');
+            spotlight.className = 'card-spotlight';
+            inner.insertBefore(spotlight, inner.firstChild);
+
+            // Track mouse movements over each card
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left; // cursor x relative to card
+                const y = e.clientY - rect.top;  // cursor y relative to card
+
+                // Smoothly update spotlight position
+                gsap.to(spotlight, {
+                    left: x,
+                    top: y,
+                    duration: 0.15,
+                    ease: 'power2.out'
+                });
+
+                // Calculate tilt angles based on mouse offset from center of card
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                // Max tilt angle of 6 degrees for a clean, professional aesthetic
+                const rotateX = -((y - centerY) / centerY) * 6;
+                const rotateY = ((x - centerX) / centerX) * 6;
+
+                // Rotate the card inner container in 3D
+                gsap.to(inner, {
+                    rotateX: rotateX,
+                    rotateY: rotateY,
+                    transformPerspective: 1000,
+                    ease: 'power2.out',
+                    duration: 0.3
+                });
+            });
+
+            // Smoothly restore default rotation and hide spotlight on mouse leave
+            card.addEventListener('mouseleave', () => {
+                gsap.to(inner, {
+                    rotateX: 0,
+                    rotateY: 0,
+                    ease: 'power3.out',
+                    duration: 0.7
+                });
+            });
+        });
+
+        // ─── 5r. REFRESH ON LOAD ───
         window.addEventListener('load', () => {
             ScrollTrigger.refresh();
         });
