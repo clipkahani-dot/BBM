@@ -93,22 +93,21 @@
 
                     <!-- SVG Connector Lines -->
                     <svg class="network-svg" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <line class="network-line" x1="250" y1="250" x2="250" y2="60" stroke="url(#goldGrad)" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.5"/>
-                        <line class="network-line" x1="250" y1="250" x2="415" y2="140" stroke="url(#purpleGrad)" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.5"/>
-                        <line class="network-line" x1="250" y1="250" x2="415" y2="360" stroke="url(#goldGrad)" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.5"/>
-                        <line class="network-line" x1="250" y1="250" x2="250" y2="440" stroke="url(#purpleGrad)" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.5"/>
-                        <line class="network-line" x1="250" y1="250" x2="85" y2="360" stroke="url(#goldGrad)" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.5"/>
-                        <line class="network-line" x1="250" y1="250" x2="85" y2="140" stroke="url(#purpleGrad)" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.5"/>
-                        <defs>
-                            <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#d4a853" stop-opacity="0.6"/>
-                                <stop offset="100%" stop-color="#d4a853" stop-opacity="0"/>
-                            </linearGradient>
-                            <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.6"/>
-                                <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
-                            </linearGradient>
-                        </defs>
+                        <!-- Static Subtle Base Lines -->
+                        <line class="network-line" x1="250" y1="250" x2="250" y2="60" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1.5" stroke-dasharray="4 4" />
+                        <line class="network-line" x1="250" y1="250" x2="415" y2="140" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1.5" stroke-dasharray="4 4" />
+                        <line class="network-line" x1="250" y1="250" x2="415" y2="360" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1.5" stroke-dasharray="4 4" />
+                        <line class="network-line" x1="250" y1="250" x2="250" y2="440" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1.5" stroke-dasharray="4 4" />
+                        <line class="network-line" x1="250" y1="250" x2="85" y2="360" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1.5" stroke-dasharray="4 4" />
+                        <line class="network-line" x1="250" y1="250" x2="85" y2="140" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1.5" stroke-dasharray="4 4" />
+                        
+                        <!-- Traveling Laser Glow Snake Lines -->
+                        <line class="network-snake" x1="250" y1="250" x2="250" y2="60" stroke="var(--gold)" stroke-width="2" />
+                        <line class="network-snake" x1="250" y1="250" x2="415" y2="140" stroke="var(--purple)" stroke-width="2" />
+                        <line class="network-snake" x1="250" y1="250" x2="415" y2="360" stroke="var(--cyan)" stroke-width="2" />
+                        <line class="network-snake" x1="250" y1="250" x2="250" y2="440" stroke="var(--gold)" stroke-width="2" />
+                        <line class="network-snake" x1="250" y1="250" x2="85" y2="360" stroke="var(--purple)" stroke-width="2" />
+                        <line class="network-snake" x1="250" y1="250" x2="85" y2="140" stroke="var(--cyan)" stroke-width="2" />
                     </svg>
 
                     <!-- Orbiting Service Nodes -->
