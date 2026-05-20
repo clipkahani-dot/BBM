@@ -1077,6 +1077,7 @@ p {
     color: var(--gold);
     box-shadow: 0 5px 20px rgba(0,0,0,0.3);
     white-space: nowrap;
+    z-index: 10;
 }
 
 .founder-quote {
