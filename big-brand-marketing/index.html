@@ -83,42 +83,59 @@
                 </div>
             </div>
 
-            <!-- Hero Visual - Floating Cards -->
+            <!-- Hero Visual - Floating Digital Network -->
             <div class="hero-visual">
-                <!-- Main Website Mockup -->
-                <div class="hero-mockup-card mockup-main">
-                    <div class="mockup-dots">
-                        <span></span><span></span><span></span>
+                <div class="hero-network">
+                    <!-- Central BBM Logo Node -->
+                    <div class="network-center">
+                        <img src="images/cropped-BBM-Logo-02-scaled-1.png" alt="BBM" class="network-logo">
                     </div>
-                    <div class="mockup-bar"></div>
-                    <div class="mockup-bar short"></div>
-                    <div class="mockup-blocks">
-                        <div class="mockup-block"></div>
-                        <div class="mockup-block"></div>
-                        <div class="mockup-block"></div>
+
+                    <!-- SVG Connector Lines -->
+                    <svg class="network-svg" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <line class="network-line" x1="250" y1="250" x2="250" y2="60" stroke="url(#goldGrad)" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.5"/>
+                        <line class="network-line" x1="250" y1="250" x2="415" y2="140" stroke="url(#purpleGrad)" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.5"/>
+                        <line class="network-line" x1="250" y1="250" x2="415" y2="360" stroke="url(#goldGrad)" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.5"/>
+                        <line class="network-line" x1="250" y1="250" x2="250" y2="440" stroke="url(#purpleGrad)" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.5"/>
+                        <line class="network-line" x1="250" y1="250" x2="85" y2="360" stroke="url(#goldGrad)" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.5"/>
+                        <line class="network-line" x1="250" y1="250" x2="85" y2="140" stroke="url(#purpleGrad)" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.5"/>
+                        <defs>
+                            <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#d4a853" stop-opacity="0.6"/>
+                                <stop offset="100%" stop-color="#d4a853" stop-opacity="0"/>
+                            </linearGradient>
+                            <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.6"/>
+                                <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+
+                    <!-- Orbiting Service Nodes -->
+                    <div class="network-node node-1">
+                        <i class="fab fa-wordpress"></i>
+                        <span>WordPress</span>
                     </div>
-                </div>
-
-                <!-- Stats Card -->
-                <div class="hero-mockup-card mockup-stats">
-                    <div class="stat-number">+247%</div>
-                    <div class="stat-label">Conversion Rate</div>
-                </div>
-
-                <!-- Code Snippet Card -->
-                <div class="hero-mockup-card mockup-code">
-                    <span class="code-purple">const</span> brand = {<br>
-                    &nbsp;&nbsp;design: <span class="code-green">"premium"</span>,<br>
-                    &nbsp;&nbsp;growth: <span class="code-gold">true</span><br>
-                    };
-                </div>
-
-                <!-- Founder Profile Card -->
-                <div class="mockup-profile">
-                    <div class="profile-img-inner">
-                        <img src="images/profile-picture-new.png" alt="Deepanshu - Founder">
+                    <div class="network-node node-2">
+                        <i class="fab fa-shopify"></i>
+                        <span>Shopify</span>
                     </div>
-                    <div class="profile-badge"><i class="fas fa-check-circle"></i> Deepanshu, Founder</div>
+                    <div class="network-node node-3">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>CRM</span>
+                    </div>
+                    <div class="network-node node-4">
+                        <i class="fas fa-server"></i>
+                        <span>Hosting</span>
+                    </div>
+                    <div class="network-node node-5">
+                        <i class="fas fa-bezier-curve"></i>
+                        <span>Branding</span>
+                    </div>
+                    <div class="network-node node-6">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Ads</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -558,6 +575,8 @@
                     <h2 class="reveal-text">The "Brochure-First" <br><span class="text-gold">Growth Strategy</span></h2>
                     
                     <div class="process-steps">
+                        <!-- Animated connector line -->
+                        <div class="process-connector-line"></div>
                         <div class="process-step">
                             <div class="step-num">01</div>
                             <div class="step-content">
@@ -623,7 +642,7 @@
                         <i class="fas fa-funnel-dollar"></i>
                     </div>
                     <h3>Conversion-Focused Layouts</h3>
-                    <p>We combine interactive GSAP storytelling elements with psychological layout blueprints. Beautiful experiences that guides and forces visitors to contact your sales team.</p>
+                    <p>We combine interactive GSAP storytelling elements with conversion-focused layout blueprints, creating seamless, elegant experiences that naturally inspire visitors to connect with your team.</p>
                 </div>
 
                 <!-- Point 3 -->
@@ -681,22 +700,22 @@
                 <div class="pricing-tabs-col">
                     <button class="pricing-tab active" data-target="plan-basic">
                         <div class="tab-info">
-                            <h4>Basic</h4>
-                            <p>Perfect for startups</p>
+                            <h4>Starter Website</h4>
+                            <p>Bespoke startup presence</p>
                         </div>
                         <i class="fas fa-chevron-right"></i>
                     </button>
                     <button class="pricing-tab" data-target="plan-pro">
                         <div class="tab-info">
-                            <h4>Pro Plan</h4>
-                            <p>For growing businesses</p>
+                            <h4>Business Growth Website</h4>
+                            <p>High-conversion CMS / e-comm</p>
                         </div>
                         <i class="fas fa-chevron-right"></i>
                     </button>
                     <button class="pricing-tab" data-target="plan-enterprise">
                         <div class="tab-info">
-                            <h4>Enterprise</h4>
-                            <p>Custom scalable solutions</p>
+                            <h4>Premium Digital System</h4>
+                            <p>Complex systems &amp; web apps</p>
                         </div>
                         <i class="fas fa-chevron-right"></i>
                     </button>
@@ -704,60 +723,62 @@
 
                 <!-- Right: Content Panels -->
                 <div class="pricing-content-col">
-                    <!-- Panel 1: Basic -->
+                    <!-- Panel 1: Basic (Starter Website) -->
                     <div class="pricing-panel active" id="plan-basic">
                         <div class="panel-header">
-                            <h3>Everything in Basic Plan:</h3>
+                            <h3>Everything in Starter Website Package:</h3>
                             <div class="price">
-                                <span class="currency">$</span><span class="amount">999</span><span class="period">/mo</span>
+                                <span class="currency" style="font-size: 1.1rem; font-weight: 600; text-transform: uppercase; margin-right: 8px;">Starting From</span>
+                                <span class="amount" style="font-size: 3rem;">₹75,000</span>
                             </div>
                         </div>
                         <ul class="feature-list">
                             <li><i class="fas fa-check-circle"></i> Custom Design (Up to 5 Pages)</li>
                             <li><i class="fas fa-check-circle"></i> Mobile-First Responsive Layout</li>
-                            <li><i class="fas fa-check-circle"></i> Basic SEO Setup</li>
-                            <li><i class="fas fa-check-circle"></i> Fast Cloud Hosting</li>
-                            <li><i class="fas fa-check-circle"></i> 1 Month Free Support</li>
+                            <li><i class="fas fa-check-circle"></i> Basic SEO Setup & Speed Optimization</li>
+                            <li><i class="fas fa-check-circle"></i> Fast Cloud Hosting & SSL</li>
+                            <li><i class="fas fa-check-circle"></i> 1 Month Free Post-Launch Support</li>
                         </ul>
                         <a href="#contact" class="btn btn-primary w-100 mt-4">Get Started</a>
                     </div>
 
-                    <!-- Panel 2: Pro -->
+                    <!-- Panel 2: Pro (Business Growth Website) -->
                     <div class="pricing-panel" id="plan-pro">
                         <div class="panel-header">
-                            <h3>Everything in Pro Plan:</h3>
+                            <h3>Everything in Business Growth Website Package:</h3>
                             <div class="price">
-                                <span class="currency">$</span><span class="amount">2499</span><span class="period">/mo</span>
+                                <span class="currency" style="font-size: 1.1rem; font-weight: 600; text-transform: uppercase; margin-right: 8px;">Starting From</span>
+                                <span class="amount" style="font-size: 3rem;">₹1,75,000</span>
                             </div>
                         </div>
                         <ul class="feature-list">
-                            <li><i class="fas fa-check-circle"></i> Custom CMS / E-commerce Setup</li>
+                            <li><i class="fas fa-check-circle"></i> Custom CMS or Shopify E-commerce Setup</li>
                             <li><i class="fas fa-check-circle"></i> Up to 15 Premium Pages</li>
-                            <li><i class="fas fa-check-circle"></i> Advanced Technical SEO</li>
-                            <li><i class="fas fa-check-circle"></i> CRM Integration</li>
-                            <li><i class="fas fa-check-circle"></i> Premium Cloud Hosting & CDN</li>
-                            <li><i class="fas fa-check-circle"></i> 6 Months Priority Support</li>
+                            <li><i class="fas fa-check-circle"></i> Advanced Technical SEO & Core Web Vitals Audit</li>
+                            <li><i class="fas fa-check-circle"></i> WhatsApp Business & CRM Integrations</li>
+                            <li><i class="fas fa-check-circle"></i> Premium Cloud Hosting & Cloudflare CDN</li>
+                            <li><i class="fas fa-check-circle"></i> 6 Months Priority Maintenance Support</li>
                         </ul>
                         <a href="#contact" class="btn btn-primary w-100 mt-4">Get Started</a>
                     </div>
 
-                    <!-- Panel 3: Enterprise -->
+                    <!-- Panel 3: Enterprise (Premium Digital System) -->
                     <div class="pricing-panel" id="plan-enterprise">
                         <div class="panel-header">
-                            <h3>Everything in Enterprise Plan:</h3>
+                            <h3>Everything in Premium Digital System Package:</h3>
                             <div class="price">
-                                <span class="amount">Custom</span>
+                                <span class="amount" style="font-size: 3rem;">Custom Quote</span>
                             </div>
                         </div>
                         <ul class="feature-list">
-                            <li><i class="fas fa-check-circle"></i> Unlimited Pages & Custom Web Apps</li>
-                            <li><i class="fas fa-check-circle"></i> Complex Database & API Architectures</li>
-                            <li><i class="fas fa-check-circle"></i> Dedicated Growth Consultant</li>
-                            <li><i class="fas fa-check-circle"></i> Enterprise Grade Security & SLAs</li>
-                            <li><i class="fas fa-check-circle"></i> Dedicated AWS/GCP Infrastructure</li>
-                            <li><i class="fas fa-check-circle"></i> 24/7 Dedicated Slack Support</li>
+                            <li><i class="fas fa-check-circle"></i> Custom Web Apps & Unlimited Pages</li>
+                            <li><i class="fas fa-check-circle"></i> Complex Database & Scalable API Architectures</li>
+                            <li><i class="fas fa-check-circle"></i> Dedicated Lead-Gen System & Dashboard</li>
+                            <li><i class="fas fa-check-circle"></i> Enterprise Grade Security & Custom SLAs</li>
+                            <li><i class="fas fa-check-circle"></i> Dedicated AWS/GCP Cloud Infrastructure</li>
+                            <li><i class="fas fa-check-circle"></i> 24/7 Priority Support (Slack & WhatsApp)</li>
                         </ul>
-                        <a href="#contact" class="btn btn-primary w-100 mt-4">Contact Sales</a>
+                        <a href="#contact" class="btn btn-primary w-100 mt-4">Request Custom Quote</a>
                     </div>
                 </div>
             </div>
@@ -884,12 +905,13 @@
                     <i class="fas fa-video"></i> Video Testimonials
                 </div>
                 <h2 class="reveal-text">Real Clients. <span class="text-gold">Real Results.</span></h2>
-                <p>Hear directly from business owners who scaled their brand with our premium digital systems.</p>
+                <p>Hear directly from business owners who scaled their brand with our premium digital systems. <br><span style="font-size: 0.8rem; color: var(--gold); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">(Ready for Client MP4/Vimeo/YouTube Video Link Integration)</span></p>
             </div>
 
             <div class="ugc-grid">
                 <!-- Card 1 -->
                 <div class="ugc-card">
+                    <span class="ugc-ready-tag"><i class="fas fa-link"></i> Video Slot Ready</span>
                     <div class="ugc-video-placeholder play-gradient-1">
                         <div class="ugc-play-overlay">
                             <i class="fas fa-play"></i>
@@ -905,6 +927,7 @@
 
                 <!-- Card 2 -->
                 <div class="ugc-card">
+                    <span class="ugc-ready-tag"><i class="fas fa-link"></i> Video Slot Ready</span>
                     <div class="ugc-video-placeholder play-gradient-2">
                         <div class="ugc-play-overlay">
                             <i class="fas fa-play"></i>
@@ -920,6 +943,7 @@
 
                 <!-- Card 3 -->
                 <div class="ugc-card">
+                    <span class="ugc-ready-tag"><i class="fas fa-link"></i> Video Slot Ready</span>
                     <div class="ugc-video-placeholder play-gradient-3">
                         <div class="ugc-play-overlay">
                             <i class="fas fa-play"></i>
@@ -935,6 +959,7 @@
 
                 <!-- Card 4 -->
                 <div class="ugc-card">
+                    <span class="ugc-ready-tag"><i class="fas fa-link"></i> Video Slot Ready</span>
                     <div class="ugc-video-placeholder play-gradient-4">
                         <div class="ugc-play-overlay">
                             <i class="fas fa-play"></i>
@@ -959,47 +984,54 @@
                     <i class="fas fa-star"></i> Client Success
                 </div>
                 <h2 class="reveal-text">Trusted by <span class="text-gold">Industry Leaders</span></h2>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px;">(Realistic agency partner reviews &amp; sample client placeholders)</p>
             </div>
             
             <div class="reviews-grid">
+                <!-- Realistic Client Placeholder Review 1 -->
                 <div class="review-card">
                     <div class="stars">
                         <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                     </div>
-                    <p class="review-text">"Deepanshu and his team completely transformed our digital presence. The new architecture is blazing fast and the dark-mode aesthetic gets compliments daily."</p>
+                    <p class="review-text">"Deepanshu and the BBM team completely revamped our corporate web presence. The new design is incredibly sharp and fast, drastically improving our brand credibility in the market."</p>
                     <div class="reviewer">
-                        <div class="reviewer-avatar">JS</div>
+                        <div class="reviewer-avatar">RV</div>
                         <div class="reviewer-info">
-                            <h4>James Smith</h4>
-                            <span>CEO, TechGrowth</span>
+                            <h4>Rajesh Verma</h4>
+                            <span>Director, Magnum GTX</span>
+                            <span class="review-placeholder-tag" style="font-size: 0.65rem; color: var(--gold); display: block; margin-top: 2px;"><i class="fas fa-info-circle"></i> Realistic Sample Review</span>
                         </div>
                     </div>
                 </div>
 
+                <!-- Realistic Client Placeholder Review 2 -->
                 <div class="review-card">
                     <div class="stars">
                         <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                     </div>
-                    <p class="review-text">"We saw a 40% increase in conversions within the first month of launching the new site. The 'Brochure-First' strategy really works!"</p>
+                    <p class="review-text">"We saw an incredible response after launching our new Shopify OS 2.0 store. The custom user experience they engineered has significantly streamlined our online sales process."</p>
                     <div class="reviewer">
-                        <div class="reviewer-avatar">MK</div>
+                        <div class="reviewer-avatar">AS</div>
                         <div class="reviewer-info">
-                            <h4>Maria Khan</h4>
-                            <span>Founder, StyleNova</span>
+                            <h4>Ananya Sen</h4>
+                            <span>Founder, CLO-A</span>
+                            <span class="review-placeholder-tag" style="font-size: 0.65rem; color: var(--gold); display: block; margin-top: 2px;"><i class="fas fa-info-circle"></i> Realistic Sample Review</span>
                         </div>
                     </div>
                 </div>
 
+                <!-- Realistic Client Placeholder Review 3 -->
                 <div class="review-card">
                     <div class="stars">
                         <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                     </div>
-                    <p class="review-text">"Incredible attention to detail. Not only does the website look premium, but the GSAP animations make the user experience flawless."</p>
+                    <p class="review-text">"Outstanding professionalism. The premium, high-speed medical portfolio has built solid trust with our patients. Ongoing maintenance support is fast and completely reliable."</p>
                     <div class="reviewer">
-                        <div class="reviewer-avatar">DL</div>
+                        <div class="reviewer-avatar">CB</div>
                         <div class="reviewer-info">
-                            <h4>David Lee</h4>
-                            <span>Director, Nexus AI</span>
+                            <h4>Dr. Charu Bansal</h4>
+                            <span>Founder, Dr. Charu Bansal Clinic</span>
+                            <span class="review-placeholder-tag" style="font-size: 0.65rem; color: var(--gold); display: block; margin-top: 2px;"><i class="fas fa-info-circle"></i> Realistic Sample Review</span>
                         </div>
                     </div>
                 </div>
@@ -1031,13 +1063,13 @@
                             <i class="fab fa-whatsapp"></i>
                             <div>
                                 <h4>WhatsApp Support</h4>
-                                <a href="https://wa.me/919999999999" target="_blank">+91 99999 99999</a>
+                                <a href="https://wa.me/91XXXXXXXXXX" target="_blank">+91 XXXXX XXXXX</a>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Directly clickable WhatsApp Now CTA -->
-                    <a href="https://wa.me/919999999999" target="_blank" class="btn btn-whatsapp">
+                    <a href="https://wa.me/91XXXXXXXXXX" target="_blank" class="btn btn-whatsapp">
                         <i class="fab fa-whatsapp"></i> WhatsApp Now
                     </a>
                 </div>

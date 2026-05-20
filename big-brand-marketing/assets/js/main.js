@@ -1,15 +1,22 @@
 // ============================================
 // BIG BRAND MARKETING - Main JavaScript
+// Premium Animation System (GSAP + Lenis)
+// Inspired by reference: animation style only
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 0. LENIS SMOOTH SCROLL INIT
-    if (typeof Lenis !== 'undefined') {
-        const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+    // ── 0. REDUCED MOTION CHECK ──
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ── 1. LENIS SMOOTH SCROLL ──
+    let lenis = null;
+    if (typeof Lenis !== 'undefined' && !prefersReducedMotion) {
+        lenis = new Lenis({
+            duration: 1.4,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             smooth: true,
+            smoothTouch: false,
         });
 
         if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
@@ -27,27 +34,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 1. NAVBAR SCROLL EFFECT
+    // ── 2. NAVBAR SCROLL EFFECT ──
     const navbar = document.querySelector('.navbar');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
+    if (navbar) {
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        });
+    }
 
-    // 2. MOBILE MENU TOGGLE
+    // ── 3. MOBILE MENU TOGGLE ──
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
 
-    if (menuToggle) {
+    if (menuToggle && navLinks) {
         menuToggle.addEventListener('click', () => {
             menuToggle.classList.toggle('active');
             navLinks.classList.toggle('open');
         });
 
-        // Close menu on link click
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 menuToggle.classList.remove('active');
@@ -56,338 +60,471 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3. SMOOTH SCROLL FOR ANCHOR LINKS
+    // ── 4. SMOOTH SCROLL FOR ANCHOR LINKS ──
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
                 e.preventDefault();
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (lenis) {
+                    lenis.scrollTo(target, { offset: -80 });
+                } else {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
             }
         });
     });
 
-    // 4. GSAP SCROLL ANIMATIONS
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    // ── 5. GSAP ANIMATION SYSTEM ──
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && !prefersReducedMotion) {
         gsap.registerPlugin(ScrollTrigger);
 
-        // SPLIT TYPE TEXT REVEAL ANIMATIONS
+        // ─── 5a. SPLIT TEXT BLUR REVEAL ───
+        // Hero title + section titles: blur + opacity + upward movement
         if (typeof SplitType !== 'undefined') {
-            const splitElements = document.querySelectorAll('.reveal-text');
-            
-            splitElements.forEach(el => {
-                // Split text into lines, words, chars
-                const text = new SplitType(el, { types: 'lines, words, chars' });
-                
-                // Animate chars sliding up and fading in
+            // Hero h1 — animate children directly (preserves highlight-gold/purple spans)
+            const heroH1 = document.querySelector('.hero h1');
+            if (heroH1) {
+                // Wrap loose text nodes in spans for animation
+                const children = Array.from(heroH1.childNodes);
+                children.forEach(node => {
+                    if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+                        const wrapper = document.createElement('span');
+                        wrapper.className = 'hero-word-wrap';
+                        wrapper.style.display = 'inline-block';
+                        wrapper.textContent = node.textContent;
+                        node.replaceWith(wrapper);
+                    }
+                });
+
+                // Select all animatable elements (spans, br excluded)
+                const heroWords = heroH1.querySelectorAll('span, .hero-word-wrap');
+                gsap.from(heroWords, {
+                    y: 60,
+                    opacity: 0,
+                    filter: 'blur(12px)',
+                    stagger: 0.12,
+                    duration: 1.2,
+                    delay: 0.3,
+                    ease: 'power4.out'
+                });
+            }
+
+            // Section heading reveal-text with blur
+            document.querySelectorAll('.reveal-text').forEach(el => {
+                const text = new SplitType(el, { types: 'words, chars' });
                 gsap.from(text.chars, {
                     scrollTrigger: {
                         trigger: el,
-                        start: 'top 85%',
+                        start: 'top 88%',
                     },
-                    y: 40,
+                    y: 50,
                     opacity: 0,
-                    rotateX: -40,
-                    stagger: 0.02,
-                    duration: 0.8,
+                    filter: 'blur(10px)',
+                    stagger: 0.015,
+                    duration: 0.9,
                     ease: 'power3.out'
                 });
             });
         }
 
-        // Animate Hero Section
-        gsap.from(".hero-content > *", {
-            opacity: 0,
-            y: 30,
-            stagger: 0.1,
-            duration: 1,
-            ease: "power3.out"
+        // ─── 5b. HERO BADGE + SUB + BUTTONS ENTRANCE ───
+        gsap.from('.hero-badge', {
+            opacity: 0, y: 20, filter: 'blur(6px)',
+            duration: 0.8, delay: 0.1, ease: 'power3.out'
+        });
+        gsap.from('.hero-sub', {
+            opacity: 0, y: 30, filter: 'blur(6px)',
+            duration: 1, delay: 0.6, ease: 'power3.out'
+        });
+        gsap.from('.hero-buttons', {
+            opacity: 0, y: 30, filter: 'blur(4px)',
+            duration: 1, delay: 0.8, ease: 'power3.out'
         });
 
-        gsap.from(".hero-mockup-card, .mockup-profile", {
-            opacity: 0,
-            y: 50,
-            stagger: 0.15,
-            duration: 1,
-            delay: 0.3,
-            ease: "power3.out"
-        });
+        // ─── 5c. HERO NETWORK VISUAL ANIMATION ───
+        const networkCenter = document.querySelector('.network-center');
+        const networkNodes = document.querySelectorAll('.network-node');
+        const networkLines = document.querySelectorAll('.network-line');
 
-        // Animate Section Headers
-        gsap.utils.toArray('.section-header').forEach(header => {
-            gsap.fromTo(header.children, 
-                { opacity: 0, y: 30 },
+        if (networkCenter) {
+            // Animate center logo
+            gsap.fromTo(networkCenter,
+                { scale: 0, opacity: 0 },
+                { scale: 1, opacity: 1, duration: 1.2, delay: 0.5, ease: 'back.out(1.7)' }
+            );
+
+            // Animate nodes staggered — use y + opacity to avoid transform conflicts
+            gsap.fromTo(networkNodes,
+                { y: 40, opacity: 0 },
                 {
-                    scrollTrigger: {
-                        trigger: header,
-                        start: "top 85%"
-                    },
-                    opacity: 1,
-                    y: 0,
+                    y: 0, opacity: 1,
+                    stagger: 0.12,
+                    duration: 0.8,
+                    delay: 0.9,
+                    ease: 'back.out(2)'
+                }
+            );
+
+            // Animate connector lines
+            gsap.fromTo(networkLines,
+                { opacity: 0 },
+                {
+                    opacity: 0.5,
                     stagger: 0.1,
-                    duration: 0.8,
-                    ease: "power2.out"
+                    duration: 0.6,
+                    delay: 1.0,
+                    ease: 'power2.out'
                 }
             );
-        });
 
-        // Animate Service Cards (Staggered 3D Reveal)
-        gsap.fromTo(".svc-card", 
-            { opacity: 0, y: 80, scale: 0.9, rotation: 1 },
-            {
-                scrollTrigger: {
-                    trigger: ".services-grid",
-                    start: "top 85%"
-                },
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                rotation: 0,
-                duration: 1.2,
-                stagger: 0.15,
-                ease: "power4.out"
-            }
-        );
+            // Continuous floating on network nodes
+            networkNodes.forEach((node, i) => {
+                gsap.to(node, {
+                    y: `${8 + (i % 3) * 4}`,
+                    duration: 2.5 + i * 0.3,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: 'sine.inOut',
+                    delay: i * 0.2,
+                });
+            });
 
-        // Animate Portfolio Cards (Staggered Smooth Reveal)
-        gsap.fromTo(".port-card", 
-            { opacity: 0, y: 100, scale: 0.94, rotation: 0.5 },
-            {
-                scrollTrigger: {
-                    trigger: ".portfolio-grid",
-                    start: "top 85%"
-                },
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                rotation: 0,
-                duration: 1.2,
-                stagger: 0.15,
-                ease: "power4.out"
-            }
-        );
+            // Continuous subtle rotation on center
+            gsap.to(networkCenter, {
+                rotation: 360,
+                duration: 60,
+                repeat: -1,
+                ease: 'none'
+            });
+        }
 
-        // Animate Process Steps (Staggered Slide Reveal)
-        gsap.fromTo(".process-step", 
-            { opacity: 0, x: 50, y: 20, rotation: 0.5 },
-            {
-                scrollTrigger: {
-                    trigger: ".process-steps",
-                    start: "top 85%"
-                },
-                opacity: 1,
-                x: 0,
-                y: 0,
-                rotation: 0,
-                duration: 1,
-                stagger: 0.2,
-                ease: "power3.out"
-            }
-        );
-
-        // Animate Founder Box
-        gsap.fromTo([".founder-img-box", ".founder-quote"], 
-            { opacity: 0, y: 40 },
-            {
-                scrollTrigger: {
-                    trigger: ".founder-col",
-                    start: "top 85%"
-                },
-                opacity: 1,
-                y: 0,
-                stagger: 0.2,
-                duration: 0.8,
-                ease: "power2.out"
-            }
-        );
-
-        // Animate Stats (Staggered Counter Entrance)
-        gsap.fromTo(".stat-item", 
-            { opacity: 0, y: 50, scale: 0.95 },
-            {
-                scrollTrigger: {
-                    trigger: ".stats-grid",
-                    start: "top 85%"
-                },
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                stagger: 0.1,
-                duration: 1,
-                ease: "back.out(1.2)"
-            }
-        );
-        
-        // Animate Case Study
-        gsap.fromTo(".case-card", 
-            { opacity: 0, y: 50 },
-            {
-                scrollTrigger: {
-                    trigger: ".case-study",
-                    start: "top 80%"
-                },
-                opacity: 1,
-                y: 0,
-                duration: 0.8,
-                ease: "power2.out"
-            }
-        );
-
-        // Animate Pricing Tabs
-        gsap.utils.toArray(".pricing-tab").forEach((tab, index) => {
-            gsap.fromTo(tab, 
-                { opacity: 0, x: -30 },
+        // ─── 5d. SECTION REVEAL — GENERIC ───
+        // Animate each major section with a subtle fade-in
+        gsap.utils.toArray('section:not(.hero):not(.marquee-section)').forEach(section => {
+            gsap.fromTo(section.querySelectorAll('.section-header > *'), 
+                { opacity: 0, y: 30, filter: 'blur(6px)' },
                 {
                     scrollTrigger: {
-                        trigger: ".pricing-tabs-col",
-                        start: "top 85%"
+                        trigger: section,
+                        start: 'top 85%',
                     },
-                    opacity: 1,
-                    x: 0,
-                    delay: index * 0.1,
-                    duration: 0.8,
-                    ease: "power2.out"
+                    opacity: 1, y: 0, filter: 'blur(0px)',
+                    stagger: 0.08,
+                    duration: 0.9,
+                    ease: 'power2.out'
                 }
             );
         });
 
-        // Animate Pricing Panel
-        gsap.fromTo(".pricing-panel.active", 
-            { opacity: 0, x: 30 },
+        // ─── 5e. SERVICE CARDS — STAGGER + GLOW ───
+        gsap.fromTo('.svc-card',
+            { opacity: 0, y: 80, scale: 0.92 },
             {
                 scrollTrigger: {
-                    trigger: ".pricing-content-col",
-                    start: "top 85%"
+                    trigger: '.services-grid',
+                    start: 'top 85%'
                 },
-                opacity: 1,
-                x: 0,
-                duration: 0.8,
-                ease: "power2.out"
+                opacity: 1, y: 0, scale: 1,
+                duration: 1.0,
+                stagger: { amount: 0.6, from: 'start' },
+                ease: 'power4.out'
             }
         );
 
-        // Animate FAQ Items (Staggered Reveal)
-        gsap.fromTo(".faq-item", 
-            { opacity: 0, y: 40 },
+        // ─── 5f. PORTFOLIO CARDS ───
+        gsap.fromTo('.port-card',
+            { opacity: 0, y: 80, scale: 0.94 },
             {
                 scrollTrigger: {
-                    trigger: ".faq-wrapper",
-                    start: "top 85%"
+                    trigger: '.portfolio-grid',
+                    start: 'top 85%'
                 },
-                opacity: 1,
-                y: 0,
-                stagger: 0.1,
-                duration: 0.8,
-                ease: "power2.out"
+                opacity: 1, y: 0, scale: 1,
+                duration: 1.0,
+                stagger: { amount: 0.5, from: 'start' },
+                ease: 'power4.out'
             }
         );
 
-        // Animate UGC Cards (Staggered Elastic Entrance)
-        gsap.fromTo(".ugc-card", 
-            { opacity: 0, y: 100, scale: 0.92 },
+        // ─── 5g. PROCESS STEPS — STAGGER + CONNECTOR LINE ───
+        const processSteps = document.querySelector('.process-steps');
+        if (processSteps) {
+            // Animate the connector line first
+            const connector = document.querySelector('.process-connector-line');
+            if (connector) {
+                gsap.fromTo(connector,
+                    { scaleY: 0 },
+                    {
+                        scrollTrigger: {
+                            trigger: processSteps,
+                            start: 'top 80%',
+                        },
+                        scaleY: 1,
+                        transformOrigin: 'top center',
+                        duration: 1.5,
+                        ease: 'power2.inOut'
+                    }
+                );
+            }
+
+            // Then stagger the steps
+            gsap.fromTo('.process-step',
+                { opacity: 0, x: 40, filter: 'blur(4px)' },
+                {
+                    scrollTrigger: {
+                        trigger: processSteps,
+                        start: 'top 82%'
+                    },
+                    opacity: 1, x: 0, filter: 'blur(0px)',
+                    duration: 0.9,
+                    stagger: 0.18,
+                    ease: 'power3.out'
+                }
+            );
+        }
+
+        // Founder column
+        gsap.fromTo(['.founder-img-box', '.founder-quote'],
+            { opacity: 0, y: 50, filter: 'blur(6px)' },
             {
                 scrollTrigger: {
-                    trigger: ".ugc-grid",
-                    start: "top 85%"
+                    trigger: '.founder-col',
+                    start: 'top 85%'
                 },
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                stagger: 0.15,
-                duration: 1.2,
-                ease: "power4.out"
+                opacity: 1, y: 0, filter: 'blur(0px)',
+                stagger: 0.2,
+                duration: 0.9,
+                ease: 'power2.out'
             }
         );
 
-        // Animate Why Cards (Staggered 3D Tilts)
-        gsap.fromTo(".why-card", 
-            { opacity: 0, y: 60, scale: 0.94, rotation: 1 },
-            {
-                scrollTrigger: {
-                    trigger: ".why-grid",
-                    start: "top 85%"
-                },
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                rotation: 0,
-                stagger: 0.15,
-                duration: 1.2,
-                ease: "power4.out"
-            }
-        );
+        // ─── 5h. STATS COUNTER ANIMATION ───
+        const statsGrid = document.querySelector('.stats-grid');
+        if (statsGrid) {
+            const statNums = document.querySelectorAll('.stat-num');
 
-        // Animate Review Cards (Staggered Smooth Entrance)
-        gsap.fromTo(".review-card", 
-            { opacity: 0, y: 50, scale: 0.95 },
+            // Entrance animation
+            gsap.fromTo('.stat-item',
+                { opacity: 0, y: 50, scale: 0.9 },
+                {
+                    scrollTrigger: {
+                        trigger: statsGrid,
+                        start: 'top 88%',
+                        onEnter: () => animateCounters(statNums),
+                    },
+                    opacity: 1, y: 0, scale: 1,
+                    stagger: 0.12,
+                    duration: 1,
+                    ease: 'back.out(1.4)'
+                }
+            );
+        }
+
+        function animateCounters(elements) {
+            elements.forEach(el => {
+                const text = el.textContent.trim();
+                // Parse the target value
+                const hasPlus = text.includes('+');
+                const hasSlash = text.includes('/');
+                const hasPercent = text.includes('%');
+
+                if (hasSlash) {
+                    // e.g., "4.9/5"
+                    const parts = text.split('/');
+                    const target = parseFloat(parts[0]);
+                    const suffix = '/' + parts[1];
+                    animateSingleCounter(el, target, suffix, true);
+                } else if (hasPercent) {
+                    const target = parseInt(text.replace(/[^0-9]/g, ''));
+                    animateSingleCounter(el, target, '%', false);
+                } else {
+                    const target = parseInt(text.replace(/[^0-9]/g, ''));
+                    const suffix = hasPlus ? '+' : '';
+                    animateSingleCounter(el, target, suffix, false);
+                }
+            });
+        }
+
+        function animateSingleCounter(el, target, suffix, isDecimal) {
+            const obj = { val: 0 };
+            gsap.to(obj, {
+                val: target,
+                duration: 2,
+                ease: 'power2.out',
+                onUpdate: () => {
+                    if (isDecimal) {
+                        el.textContent = obj.val.toFixed(1) + suffix;
+                    } else {
+                        el.textContent = Math.round(obj.val) + suffix;
+                    }
+                }
+            });
+        }
+
+        // ─── 5i. CASE STUDY ───
+        gsap.fromTo('.case-card',
+            { opacity: 0, y: 60, filter: 'blur(4px)' },
             {
                 scrollTrigger: {
-                    trigger: ".reviews-grid",
-                    start: "top 85%"
+                    trigger: '.case-study',
+                    start: 'top 80%'
                 },
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                stagger: 0.15,
+                opacity: 1, y: 0, filter: 'blur(0px)',
                 duration: 1,
-                ease: "power3.out"
+                ease: 'power2.out'
             }
         );
 
-        // Recalculate ScrollTrigger positions once everything is loaded
-        window.addEventListener("load", () => {
-            ScrollTrigger.refresh();
+        // ─── 5j. PRICING — TABS + PANELS ───
+        gsap.utils.toArray('.pricing-tab').forEach((tab, index) => {
+            gsap.fromTo(tab,
+                { opacity: 0, x: -30, filter: 'blur(4px)' },
+                {
+                    scrollTrigger: {
+                        trigger: '.pricing-tabs-col',
+                        start: 'top 85%'
+                    },
+                    opacity: 1, x: 0, filter: 'blur(0px)',
+                    delay: index * 0.1,
+                    duration: 0.8,
+                    ease: 'power2.out'
+                }
+            );
         });
 
-        // Animate Contact Columns
-        gsap.fromTo(".contact-info-col", 
-            { opacity: 0, x: -50 },
+        gsap.fromTo('.pricing-panel.active',
+            { opacity: 0, x: 30, filter: 'blur(4px)' },
             {
                 scrollTrigger: {
-                    trigger: ".contact-section",
-                    start: "top 80%"
+                    trigger: '.pricing-content-col',
+                    start: 'top 85%'
                 },
-                opacity: 1,
-                x: 0,
+                opacity: 1, x: 0, filter: 'blur(0px)',
                 duration: 0.8,
-                ease: "power2.out"
+                ease: 'power2.out'
             }
         );
 
-        gsap.fromTo(".contact-form-col", 
-            { opacity: 0, x: 50 },
+        // ─── 5k. FAQ ITEMS — STAGGER REVEAL ───
+        gsap.fromTo('.faq-item',
+            { opacity: 0, y: 30, filter: 'blur(3px)' },
             {
                 scrollTrigger: {
-                    trigger: ".contact-section",
-                    start: "top 80%"
+                    trigger: '.faq-wrapper',
+                    start: 'top 85%'
                 },
-                opacity: 1,
-                x: 0,
-                duration: 0.8,
-                ease: "power2.out"
+                opacity: 1, y: 0, filter: 'blur(0px)',
+                stagger: 0.08,
+                duration: 0.7,
+                ease: 'power2.out'
             }
         );
 
-        // Animate Footer Columns
-        gsap.utils.toArray(".footer-col").forEach((col, index) => {
-            gsap.fromTo(col, 
+        // ─── 5l. UGC VIDEO CARDS — STAGGER + PLAY PULSE ───
+        gsap.fromTo('.ugc-card',
+            { opacity: 0, y: 100, scale: 0.9 },
+            {
+                scrollTrigger: {
+                    trigger: '.ugc-grid',
+                    start: 'top 85%'
+                },
+                opacity: 1, y: 0, scale: 1,
+                stagger: 0.15,
+                duration: 1.2,
+                ease: 'power4.out'
+            }
+        );
+
+        // ─── 5m. WHY CARDS — 3D STAGGER ───
+        gsap.fromTo('.why-card',
+            { opacity: 0, y: 60, scale: 0.94 },
+            {
+                scrollTrigger: {
+                    trigger: '.why-grid',
+                    start: 'top 85%'
+                },
+                opacity: 1, y: 0, scale: 1,
+                stagger: { amount: 0.5, from: 'start' },
+                duration: 1.0,
+                ease: 'power4.out'
+            }
+        );
+
+        // ─── 5n. REVIEW CARDS — STAGGER ───
+        gsap.fromTo('.review-card',
+            { opacity: 0, y: 50, scale: 0.95, filter: 'blur(3px)' },
+            {
+                scrollTrigger: {
+                    trigger: '.reviews-grid',
+                    start: 'top 85%'
+                },
+                opacity: 1, y: 0, scale: 1, filter: 'blur(0px)',
+                stagger: 0.15,
+                duration: 1,
+                ease: 'power3.out'
+            }
+        );
+
+        // ─── 5o. CONTACT COLUMNS ───
+        gsap.fromTo('.contact-info-col',
+            { opacity: 0, x: -50, filter: 'blur(6px)' },
+            {
+                scrollTrigger: {
+                    trigger: '.contact-section',
+                    start: 'top 80%'
+                },
+                opacity: 1, x: 0, filter: 'blur(0px)',
+                duration: 0.8,
+                ease: 'power2.out'
+            }
+        );
+
+        gsap.fromTo('.contact-form-col',
+            { opacity: 0, x: 50, filter: 'blur(6px)' },
+            {
+                scrollTrigger: {
+                    trigger: '.contact-section',
+                    start: 'top 80%'
+                },
+                opacity: 1, x: 0, filter: 'blur(0px)',
+                duration: 0.8,
+                ease: 'power2.out'
+            }
+        );
+
+        // ─── 5p. FOOTER COLUMNS ───
+        gsap.utils.toArray('.footer-col').forEach((col, index) => {
+            gsap.fromTo(col,
                 { opacity: 0, y: 30 },
                 {
                     scrollTrigger: {
-                        trigger: ".footer-grid",
-                        start: "top 90%"
+                        trigger: '.footer-grid',
+                        start: 'top 90%'
                     },
-                    opacity: 1,
-                    y: 0,
+                    opacity: 1, y: 0,
                     delay: index * 0.1,
                     duration: 0.8,
-                    ease: "power2.out"
+                    ease: 'power2.out'
                 }
             );
+        });
+
+        // ─── 5q. REFRESH ON LOAD ───
+        window.addEventListener('load', () => {
+            ScrollTrigger.refresh();
         });
     }
 
-    // 5. PRICING TAB SWITCHING
+    // ── 6. MARQUEE — SLOW SMOOTH INFINITE ──
+    const marqueeContent = document.getElementById('marquee-content');
+    if (marqueeContent) {
+        // Clone content for seamless loop
+        const clone = marqueeContent.innerHTML;
+        marqueeContent.innerHTML += clone;
+    }
+
+    // ── 7. PRICING TAB SWITCHING ──
     const pricingTabs = document.querySelectorAll('.pricing-tab');
     const pricingPanels = document.querySelectorAll('.pricing-panel');
 
@@ -406,59 +543,45 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 6. FAQ ACCORDION LOGIC
+    // ── 8. FAQ ACCORDION ──
     const faqHeaders = document.querySelectorAll('.faq-header');
 
     faqHeaders.forEach(header => {
         header.addEventListener('click', () => {
             const faqItem = header.parentElement;
             const faqBody = header.nextElementSibling;
-            
-            // Close other open items (optional, makes it an accordion)
+
             document.querySelectorAll('.faq-item.active').forEach(item => {
-                if(item !== faqItem) {
+                if (item !== faqItem) {
                     item.classList.remove('active');
                     item.querySelector('.faq-body').style.maxHeight = 0;
                 }
             });
 
-            // Toggle current item
             faqItem.classList.toggle('active');
 
             if (faqItem.classList.contains('active')) {
-                faqBody.style.maxHeight = faqBody.scrollHeight + "px";
+                faqBody.style.maxHeight = faqBody.scrollHeight + 'px';
             } else {
                 faqBody.style.maxHeight = 0;
             }
         });
     });
 
-    // 7. INFINITE MARQUEE CLONE
-    const marqueeContent = document.getElementById('marquee-content');
-    if (marqueeContent) {
-        // Clone the content to make it scroll seamlessly
-        const clone = marqueeContent.innerHTML;
-        marqueeContent.innerHTML += clone;
-    }
-
-    // 8. CONTACT FORM HANDLING
+    // ── 9. CONTACT FORM HANDLING ──
     const leadForm = document.getElementById('leadForm');
     if (leadForm) {
         leadForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            
-            // Display dynamic premium toast message
+
             const name = document.getElementById('formName').value;
             const toast = document.createElement('div');
             toast.className = 'toast-success';
             toast.innerHTML = `<i class="fas fa-check-circle"></i> <span>Thank you, <strong>${name}</strong>! Your proposal request has been received. Our team will WhatsApp you shortly.</span>`;
-            
+
             document.body.appendChild(toast);
-            
-            // Reset Form
             leadForm.reset();
-            
-            // Fade out and remove toast after 5 seconds
+
             setTimeout(() => {
                 toast.style.transition = 'opacity 0.5s ease';
                 toast.style.opacity = '0';

@@ -51,6 +51,13 @@
     /* Transitions */
     --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     --transition-fast: all 0.2s ease;
+
+    /* Mapped variables to resolve undefined issues */
+    --bg-main: var(--bg-primary);
+    --bg-dark: var(--bg-secondary);
+    --border-light: var(--border);
+    --text-light: var(--text-white);
+    --font-main: var(--font-body);
 }
 
 /* ---- Reset & Base ---- */
@@ -1027,6 +1034,7 @@ p {
     flex-direction: column;
     gap: 24px;
     margin-top: 16px;
+    position: relative;
 }
 
 .process-step {
@@ -1822,7 +1830,7 @@ p {
 
 .marquee-content {
     display: inline-block;
-    animation: marqueeScroll 30s linear infinite;
+    animation: marqueeScroll 45s linear infinite;
 }
 
 .marquee-content:hover {
@@ -2175,6 +2183,22 @@ p {
     letter-spacing: 0.5px;
 }
 
+.ugc-ready-tag {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(212, 168, 83, 0.15);
+    border: 1px solid var(--border-gold);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    z-index: 10;
+}
+
 .ugc-info-overlay h3 {
     font-size: 1.25rem;
     color: var(--text-light);
@@ -2525,13 +2549,205 @@ html.lenis {
   pointer-events: none;
 }
 
-/* SplitType Base - hide words/chars before they slide up */
+/* SplitType Base - keep chars as inline-block for GSAP transforms */
 .reveal-text .word, .reveal-text .char {
     display: inline-block;
+    will-change: transform, opacity, filter;
 }
 .reveal-text .line {
     overflow: hidden;
     padding-bottom: 0.1em;
     margin-bottom: -0.1em;
     transform-origin: left bottom;
+}
+.hero h1 .word, .hero h1 .char {
+    display: inline-block;
+    will-change: transform, opacity, filter;
+}
+
+/* ============================================
+   HERO DIGITAL NETWORK VISUAL
+   ============================================ */
+.hero-network {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 1/1;
+    margin: 0 auto;
+}
+
+.network-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.network-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 2px solid var(--border-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    box-shadow:
+        0 0 40px rgba(212, 168, 83, 0.15),
+        0 0 80px rgba(212, 168, 83, 0.05);
+}
+
+.network-logo {
+    width: 60px;
+    height: auto;
+    object-fit: contain;
+}
+
+.network-node {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    z-index: 5;
+    transition: var(--transition);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-card);
+}
+
+.network-node i {
+    font-size: 1.3rem;
+    color: var(--gold);
+}
+
+.network-node span {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.network-node:hover {
+    border-color: var(--border-gold);
+    transform: scale(1.15);
+    box-shadow: 0 8px 30px rgba(212, 168, 83, 0.2);
+}
+
+.network-node:hover i {
+    color: var(--gold-light);
+}
+
+/* Position nodes in a hexagonal pattern around center (500×500 viewBox) */
+/* Top */
+.node-1 { top: 3%; left: 50%; transform: translateX(-50%); }
+/* Top Right */
+.node-2 { top: 20%; right: 5%; }
+/* Bottom Right */
+.node-3 { bottom: 20%; right: 5%; }
+/* Bottom */
+.node-4 { bottom: 3%; left: 50%; transform: translateX(-50%); }
+/* Bottom Left */
+.node-5 { bottom: 20%; left: 5%; }
+/* Top Left */
+.node-6 { top: 20%; left: 5%; }
+
+/* ============================================
+   PROCESS CONNECTOR LINE
+   ============================================ */
+.process-connector-line {
+    position: absolute;
+    left: 26px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(
+        180deg,
+        transparent 0%,
+        var(--gold) 10%,
+        var(--purple) 50%,
+        var(--gold) 90%,
+        transparent 100%
+    );
+    opacity: 0.3;
+    z-index: 0;
+    border-radius: 2px;
+    transform-origin: top center;
+}
+
+/* ============================================
+   UGC HOVER PLAY PULSE
+   ============================================ */
+@keyframes playPulse {
+    0% { box-shadow: 0 0 0 0 rgba(212, 168, 83, 0.4); }
+    70% { box-shadow: 0 0 0 18px rgba(212, 168, 83, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(212, 168, 83, 0); }
+}
+
+.ugc-card:hover .ugc-play-overlay {
+    animation: playPulse 1.5s ease-in-out infinite;
+}
+
+/* ============================================
+   SERVICE CARDS ENHANCED GLOW HOVER
+   ============================================ */
+.svc-card:hover .svc-card-inner::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border-radius: 20px;
+    background: radial-gradient(circle at 50% 0%, rgba(212, 168, 83, 0.08), transparent 60%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* ============================================
+   PREFERS REDUCED MOTION
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    .marquee-content {
+        animation: none !important;
+    }
+    .network-node,
+    .hero-mockup-card,
+    .mockup-profile {
+        animation: none !important;
+    }
+}
+
+/* ============================================
+   NETWORK VISUAL RESPONSIVE
+   ============================================ */
+@media (max-width: 992px) {
+    .hero-visual {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .process-connector-line {
+        left: 16px;
+    }
 }
