@@ -6,6 +6,22 @@
 /* Google Fonts Import */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800&display=swap');
 
+/* ---- Revolving Border Gradient Property & Keyframes ---- */
+@property --border-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes rotating-border-spin {
+    from {
+        --border-angle: 0deg;
+    }
+    to {
+        --border-angle: 360deg;
+    }
+}
+
 /* ---- CSS Variables ---- */
 :root {
     /* Core Colors */
@@ -730,14 +746,15 @@ p {
 .svc-card {
     position: relative;
     border-radius: 22px;
-    padding: 2px;                         /* the "border" thickness */
+    padding: 2.5px;                        /* card border thickness */
     background: var(--border);            /* default subtle border */
-    transition: background 0.3s ease, box-shadow 0.3s ease;
+    transition: box-shadow 0.3s ease;
     perspective: 1000px;                  /* Enable 3D perspective parent */
 }
 
 .svc-card:hover {
-    background: linear-gradient(135deg, var(--gold), var(--purple), var(--cyan));
+    background: conic-gradient(from var(--border-angle), var(--gold), var(--purple), var(--cyan), var(--gold));
+    animation: rotating-border-spin 6s linear infinite;
     box-shadow:
         0 8px 40px rgba(212, 168, 83, 0.15),
         0 0px 80px rgba(124, 58, 237, 0.08);
@@ -838,8 +855,27 @@ p {
     justify-content: center;
     font-size: 1.4rem;
     color: var(--gold);
-    transition: var(--transition);
+    transition: color 0.3s, transform 0.3s, box-shadow 0.3s;
     position: relative;
+    padding: 1px; /* border thickness */
+}
+
+/* Background cutout mask */
+.svc-icon-ring::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border-radius: 15px;
+    background: var(--bg-card);
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 1;
+}
+
+/* Make icon content float in front of mask */
+.svc-icon-ring i {
+    position: relative;
+    z-index: 2;
 }
 
 .svc-icon-ring::after {
@@ -854,11 +890,17 @@ p {
 }
 
 .svc-card:hover .svc-icon-ring {
-    background: linear-gradient(135deg, var(--gold), var(--purple));
+    background: conic-gradient(from var(--border-angle), var(--gold), var(--purple), var(--cyan), var(--gold));
+    animation: rotating-border-spin 4s linear infinite;
     color: #fff;
     border-color: transparent;
     transform: scale(1.1) rotate(-4deg);
     box-shadow: 0 4px 20px var(--gold-glow);
+}
+
+.svc-card:hover .svc-icon-ring::before {
+    opacity: 1;
+    background: var(--bg-card-hover);
 }
 
 .svc-card:hover .svc-icon-ring::after {
@@ -992,13 +1034,31 @@ p {
     align-items: center;
     justify-content: center;
     box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    
+    /* Revolving Border Gradient */
+    padding: 2.5px;
+    background: conic-gradient(from var(--border-angle), var(--gold), var(--purple), var(--cyan), var(--gold));
+    animation: rotating-border-spin 6s linear infinite;
+}
+
+/* Background cutout mask */
+.founder-img-inner::before {
+    content: '';
+    position: absolute;
+    inset: 2.5px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    z-index: 1;
 }
 
 .founder-img-inner img {
+    position: relative;
+    z-index: 2;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transform: scale(1.05); /* Scale slightly to ensure the gold ring is pushed exactly to the edge */
+    border-radius: 50%;
+    transform: scale(1.02); /* subtly scales up to overlap cut mask cleanly */
     border: none;
 }
 
